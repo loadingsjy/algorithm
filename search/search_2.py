@@ -16,6 +16,9 @@
 # 输出：-1
 
 
+from typing import List
+
+
 class Solution:
     def search(self, nums: list[int], target: int) -> int:
         def is_blue(i):
@@ -37,3 +40,45 @@ class Solution:
         if left == n or nums[left] != target:
             return -1
         return left
+
+    def search2(self, nums: List[int], target: int) -> int:
+        """核心思想:
+
+        1.找到该数位于哪一段，把某个数 x 与最后一个数 nums[n−1] 比大小：
+            如果 x>nums[n−1]，那么可以推出以下结论：
+                nums 一定被分成左右两个递增段；
+                第一段的所有元素均大于第二段的所有元素；
+                x 在第一段。
+            如果 x≤nums[n−1]，那么 x 一定在第二段。（或者 nums 就是递增数组，此时只有一段。）
+        2.分别找到x和target的位于哪一段：
+            如果 x 和 target 在不同的递增段：
+            1)如果 target 在第一段（左），x 在第二段（右），说明 x 在 target 右边；
+            2)如果 target 在第二段（右），x 在第一段（左），说明 x 在 target 左边。
+            3)如果 x 和 target 在相同的递增段：
+                比较 x 和 target 的大小即可。
+        """
+        l, r = 0, len(nums) - 1
+        end = nums[-1]
+        while l <= r:
+            mid = (l + r) // 2
+            x = nums[mid]
+            if (target > end and x > end) or (target <= end and x <= end):
+                if target > x:
+                    l = mid + 1
+                elif target < x:
+                    r = mid - 1
+                else:
+                    return mid
+            elif target > end and x <= end:
+                r = mid - 1
+            else:
+                l = mid + 1
+        return -1
+
+
+if __name__ == "__main__":
+    s = Solution()
+    nums = [4, 5, 6, 7, 0, 1, 2]
+    target = 0
+    print(s.search(nums, target))
+    print(s.search2(nums, target))
