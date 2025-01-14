@@ -85,13 +85,6 @@ def get_active_network_interfaces():
 
     return active_interfaces
 
-    active_interfaces = get_active_network_interfaces()
-
-    for interface_name, addresses in active_interfaces.items():
-        print(f"网卡名称: {interface_name}")
-        for addr in addresses:
-            print(f"  IPv4 地址: {addr}")
-
     # net_if_stats = psutil.net_if_stats()
 
     # for interface_name, stats in net_if_stats.items():
@@ -105,5 +98,5 @@ def get_active_network_interfaces():
 if __name__ == "__main__":
     active_interfaces = get_active_network_interfaces()
     print(active_interfaces)
-    # send_and_receive_data("以太网")
+    # send_and_receive_data("WLAN")
     # start_server()
