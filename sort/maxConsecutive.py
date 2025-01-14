@@ -17,8 +17,8 @@
 # 解释：每层楼都被规划为特殊楼层，所以返回 0 。
 
 # 提示
-# 1 <= special.length <= 105
-# 1 <= bottom <= special[i] <= top <= 109
+# 1 <= special.length <= 10^5
+# 1 <= bottom <= special[i] <= top <= 10^9
 # special 中的所有值 互不相同
 
 
