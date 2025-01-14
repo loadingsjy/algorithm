@@ -77,9 +77,10 @@ def get_active_network_interfaces():
 
         if interface_status:
             for address in interface_addresses:
-                # 我们这里只关心IPv4地址
+                # IPv4地址
                 if address.family == socket.AF_INET:
                     active_interfaces[interface_name].append(address.address)
+                # IPv6地址
                 if address.family == socket.AF_INET6:
                     active_interfaces[interface_name].append(address.address)
 

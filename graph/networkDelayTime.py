@@ -20,23 +20,26 @@
 from math import inf
 from heapq import *
 from collections import defaultdict
+from typing import List
 
 
 class Solution:
     def networkDelayTime(self, times: list[list[int]], n: int, k: int) -> int:
-        """堆优化 Dijkstra算法（适用于稀疏图）  时间复杂度：O(mlogm)  空间复杂度：O(n+m)  n=点的数量，m=边的数量"""
-        # 邻接表建图
-        next_nodes = defaultdict(list)
+        """
+        堆优化 Dijkstra算法（适用于稀疏图）  时间复杂度：O(mlogm)  空间复杂度：O(n+m)  n=点的数量，m=边的数量
+        """
+        next_nodes = defaultdict(list)  # 邻接表建图
         for u, v, w in times:
             next_nodes[u].append((v, w))
 
-        distances = [inf] * (n + 1)
+        distances = [inf] * (n + 1)  # 从源点到各个点的最短距离
         distances[k] = 0
         visited = [False] * (n + 1)
-        heap = [(0, k)]
+        heap = [(0, k)]  # 堆中存放 (距离，节点) 元组
+        # 堆优化：用堆来维护当前到各个节点的最短距离，每次弹出堆中距离最小的节点，并更新其邻居的距离
         heapify(heap)
         while heap:
-            w, cur = heappop(heap)
+            _, cur = heappop(heap)
             if not visited[cur]:
                 visited[cur] = True
                 for nxt, w in next_nodes[cur]:
@@ -49,7 +52,9 @@ class Solution:
         return ans
 
     def networkDelayTime2(self, times: list[list[int]], n: int, k: int) -> int:
-        """朴素 Dijkstra算法（适用于稠密图）    时间复杂度：O(n^2 + m)  空间复杂度：O(n^2)， n=点的数量，m=边的数量"""
+        """
+        朴素 Dijkstra算法（适用于稠密图）    时间复杂度：O(n^2 + m)  空间复杂度：O(n^2)， n=点的数量，m=边的数量
+        """
         g = [[inf for _ in range(n)] for _ in range(n)]  # 邻接矩阵
         for x, y, d in times:
             g[x - 1][y - 1] = d
@@ -74,7 +79,9 @@ class Solution:
                 dis[y] = min(dis[y], dis[x] + d)
 
     def networkDelayTime3(self, times: list[list[int]], n: int, k: int) -> int:
-        """堆优化 Dijkstra算法  灵神写法：不用visited数组"""
+        """
+        堆优化 Dijkstra算法  灵神写法：不用visited数组
+        """
         g = [[] for _ in range(n)]  # 邻接表
         for x, y, d in times:
             g[x - 1].append((y - 1, d))
@@ -101,5 +108,6 @@ if __name__ == "__main__":
     n = 4
     k = 2
     print(sol.networkDelayTime(times, n, k))
+    print(sol.networkDelayTime_1(times, n, k))
     print(sol.networkDelayTime2(times, n, k))
     print(sol.networkDelayTime3(times, n, k))
